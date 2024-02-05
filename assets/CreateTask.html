@@ -1,0 +1,347 @@
+<html>
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
+    <title>Create Task</title>
+
+    <style>
+        #loader-icon {
+            display: none;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="p-3">
+        <div>
+            <span class="text-xl text-gray-900 font-semibold">Create Task</span>
+            <hr class="relative top-2 h-0.5 border-t-0 bg-black opacity-10" />
+        </div>
+        <div class="pt-5">
+            <label for="Task" class="block mb-2 text-gray-700 text-base font-bold">Task name</label>
+            <input type="text" id="Taskname"
+                class="block bg-white w-4/6 border border-gray-300 text-black text-sm font-normal rounded-md focus:border-indigo-500 focus:border-2 p-3 focus:outline-none">
+        </div>
+        <div class="w-full">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Task Description</label>
+            <div class="">
+                <div id="editorjs" name="editor" class="relative z-10 bg-aliceblue border border-gray-300 rounded p-4"
+                    style="max-height: 150px; overflow-y: auto;padding: 51px;"></div>
+                <div id="loader-icon">
+                    <img src="loader.gif" id="image-size" />
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="w-full">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Task Description</label>
+            <div class="">
+                <div id="editorjs" name="editor" class="relative z-10 bg-aliceblue border border-gray-300 rounded p-4"
+                    style="padding: 58px;"></div>
+                <div id="loader-icon">
+                    <img src="loader.gif" id="image-size" />
+                </div>
+            </div>
+        </div>-->
+
+
+
+
+        <div class="pt-5">
+            <label for="Assigntask" class="block mb-2 text-gray-700 text-base font-bold">Assign task to</label>
+
+            <input id="Assigntask" type="text" placeholder="Search for user" onfocus="SearchForAssigning()"
+                class="w-4/6 px-2 py-2 bg-white text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none relative" />
+            <i class="fas fa-times relative right-7 cursor-pointer" onclick="clearSelection()" id="userclearicon"></i>
+
+            <div id="usersdropdown" style="
+                overflow: scroll;
+                overflow-x: unset;
+                height: 111px;
+                z-index: 1;"
+                class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                <!-- Dropdown content goes here -->
+                <ul id="optionsList" class="py-1">
+                    <!-- Options will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="pt-5">
+            <label for="TaskReviewer" class="block mb-2 text-gray-700 text-base font-bold">Task Reviewer</label>
+
+            <input id="TaskReviewInput" type="text" placeholder="Search for user" onfocus="SearchForReviewer()"
+                class="w-4/6 px-2 py-2 bg-white text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none relative" />
+            <i class="fas fa-times relative right-7 cursor-pointer" onclick="clearReviewerSelection()"
+                id="clearReviewer"></i>
+
+            <div id="TaskReviewdropdown" style="
+                overflow: scroll;
+                overflow-x: unset;
+                height: 111px;
+                z-index: 2;"
+                class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                <!-- Dropdown content goes here -->
+                <ul id="TaskreviewerList" class="py-1">
+                    <!-- Options will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+
+
+
+
+
+        <div>
+            <label for="inp4" class="block pt-3 text-gray-700 text-base font-bold">Due date</label>
+            <div class="relative pt-2 flex rounded-lg">
+                <input type="date" id="inp4"
+                    class="p-3 block w-4/6 border border-gray-200 rounded-s-md text-md focus:border-indigo-500 focus:border-2 focus:outline-none" />
+                <button type="button"
+                    class="-ms-px py-3 px-4 inline-flex rounded-r-md justify-center items-center gap-2 border font-medium bg-white text-black text-base align-middle hover:bg-gray-50 focus:border-indigo-500 focus:border-2 focus:outline-none">
+                    Change
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer class="bg-gray-100 p-4 flex justify-end gap-3 sticky bottom-0">
+        <button id="close" class="border border-gray-300 bg-white text-black font-medium py-2 px-3 rounded-lg"
+            onclick="close()">Cancel</button>
+        <button class="border border-gray-300 bg-blue-600 text-white font-medium py-2 px-3 rounded-lg">Create</button>
+    </footer>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script>
+    <script src="editor-tool.js"></script>
+    <script>
+
+        let taskobj = window.localStorage.getItem("taskobject");
+        taskobj = JSON.parse(taskobj)
+        console.log(taskobj)
+
+        // Office.onReady(function () {
+        //     Office.context.ui.addHandlerAsync(Office.EventType.DialogParentMessageReceived,
+        //         onMessageFromParent);
+        // });
+
+        // function onMessageFromParent(arg) {
+        //     const messageFromParent = JSON.parse(arg.message);
+        //     console.log(messageFromParent);
+
+        //     // document.getElementById("Taskname").value = messageFromParent.name
+        //     // document.getElementById("editorjs").innerHTML = messageFromParent.position
+
+        // }
+        Office.onReady(function () {
+            // Add any initialization code for your dialog here.
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject = urlParams.get('subject');
+        const emailbody = urlParams.get('emailbody');
+
+        document.getElementById("Taskname").value = subject
+        document.getElementById("editorjs").innerHTML = emailbody
+        //// search for user
+        const UserArray = ['lisa', 'nick', 'dane'];
+        var userclearicon = document.getElementById('userclearicon');
+        var clearReviewer = document.getElementById('clearReviewer');
+
+        userclearicon.style.display = "none"
+        clearReviewer.style.display = "none"
+
+        function populateDropdown(filteredOptions) {
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            filteredOptions.forEach(option => {
+                const li = document.createElement('li');
+                li.classList.add('text-gray-700', 'hover:bg-gray-100', 'px-4', 'py-2', 'cursor-pointer');
+                li.textContent = option;
+                li.onclick = () => selectOption(option);
+                optionsList.appendChild(li);
+            });
+        }
+
+
+        function SearchForAssigning() {
+            const searchInput = document.getElementById('Assigntask');
+            const usersdropdown = document.getElementById('usersdropdown');
+            const searchTerm = searchInput.value.toLowerCase();
+
+            const filteredUserArray = UserArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+            populateDropdown(filteredUserArray);
+            usersdropdown.classList.toggle('hidden', filteredUserArray.length === 0);
+            usersdropdown.style.display = 'block';
+        }
+
+        function selectOption(option) {
+            const searchInput = document.getElementById('Assigntask');
+            searchInput.value = option;
+            // owner.push(option)
+            // console.log(owner)
+            const usersdropdown = document.getElementById('usersdropdown');
+            usersdropdown.style.display = 'none';
+            userclearicon.style.display = "inline"
+            document.getElementById('usersdropdown').classList.add('hidden');
+        }
+
+        function showDropdown() {
+            const usersdropdown = document.getElementById('usersdropdown');
+            usersdropdown.style.display = 'block';
+        }
+
+        function clearSelection() {
+            const searchInput = document.getElementById('Assigntask');
+            searchInput.value = '';
+            // owner = [];
+            // console.log(owner)
+
+            document.getElementById('usersdropdown').classList.add('hidden');
+            userclearicon.style.display = "none"
+
+        }
+
+        document.addEventListener('click', function (event) {
+            const usersinput = document.getElementById('Assigntask');
+            const usersdropdown = document.getElementById('usersdropdown');
+
+            // Check if the click was outside the input and the dropdown
+            if (!usersinput.contains(event.target) && !usersdropdown.contains(event.target)) {
+                // Handle the event for clicking outside (e.g., hide the dropdown)
+                hideusersdropdown();
+            }
+        });
+        function hideusersdropdown() {
+            const dropdown = document.getElementById('usersdropdown');
+            dropdown.style.display = 'none';
+        }
+        /// search user ends
+
+        /// Task Reviewer start
+
+        function populateTaskReviewerDropdown(filteredOptions) {
+            const optionsList = document.getElementById('TaskreviewerList');
+            optionsList.innerHTML = '';
+
+            filteredOptions.forEach(option => {
+                const li = document.createElement('li');
+                li.classList.add('text-gray-700', 'hover:bg-gray-100', 'px-4', 'py-2', 'cursor-pointer');
+                li.textContent = option;
+                li.onclick = () => selectReviewerOption(option);
+                optionsList.appendChild(li);
+            });
+        }
+
+
+
+        function SearchForReviewer() {
+            const searchInput = document.getElementById('TaskReviewInput');
+            const usersdropdown = document.getElementById('TaskReviewdropdown');
+            const searchTerm = searchInput.value.toLowerCase();
+
+            const filteredUserArray = UserArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+            populateTaskReviewerDropdown(filteredUserArray);
+            usersdropdown.classList.toggle('hidden', filteredUserArray.length === 0);
+            usersdropdown.style.display = 'block';
+        }
+
+        function selectReviewerOption(option) {
+            const searchInput = document.getElementById('TaskReviewInput');
+            searchInput.value = option;
+            // owner.push(option)
+            // console.log(owner)
+            const usersdropdown = document.getElementById('TaskReviewdropdown');
+            usersdropdown.style.display = 'none';
+            clearReviewer.style.display = "inline"
+            document.getElementById('TaskReviewdropdown').classList.add('hidden');
+        }
+
+        function showDropdown() {
+            const usersdropdown = document.getElementById('TaskReviewdropdown');
+            usersdropdown.style.display = 'block';
+        }
+
+        function clearReviewerSelection() {
+            const searchInput = document.getElementById('TaskReviewInput');
+            searchInput.value = '';
+            // owner = [];
+            // console.log(owner)
+
+            document.getElementById('TaskReviewdropdown').classList.add('hidden');
+            clearReviewer.style.display = "none"
+
+        }
+
+        document.addEventListener('click', function (event) {
+            const usersinput = document.getElementById('TaskReviewInput');
+            const usersdropdown = document.getElementById('TaskReviewdropdown');
+
+            // Check if the click was outside the input and the dropdown
+            if (!usersinput.contains(event.target) && !usersdropdown.contains(event.target)) {
+                // Handle the event for clicking outside (e.g., hide the dropdown)
+                hideReviewerdropdown();
+            }
+        });
+        function hideReviewerdropdown() {
+            const dropdown = document.getElementById('TaskReviewdropdown');
+            dropdown.style.display = 'none';
+        }
+
+        /// Task Reviewer ends
+
+
+
+
+
+
+        // Dummy data for demonstration
+        const dummyData = ''; // Add your static data here
+
+        const editor = new EditorJS({
+            holder: 'editorjs',
+            tools: {
+                header: Header,
+                list: List,
+
+                checklist: {
+                    class: Checklist
+                }
+
+            },
+            data: dummyData,
+        });
+
+        function close() {
+            let close = true;
+            Office.context.ui.messageParent(close.toString());
+        }
+
+        // Add event listener to the button
+        document.getElementById("close").addEventListener("click", close);
+    </script>
+</body>
+
+</html>

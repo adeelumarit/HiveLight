@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <title>Document</title>
+    <style>
+        /* Additional styles can be added here */
+        .options-dropdown {
+            position: absolute;
+            display: none;
+            z-index: 10;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .options-dropdownedit {
+            display: none;
+            position: absolute;
+            top: 56px;
+            left: 31px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            z-index: 1;
+        }
+
+        .options-dropdown button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 8px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        #matterNameid{
+
+            width:"37%"
+        }
+    </style>
+</head>
+
+<body>
+    <div class="p-2">
+        <div class="w-full z-index-50 fixed bg-white top-0 border-b-2 border-gray-200 py-4">
+            <span style="font-size: 22px;font-weight: 400;" class="h-4 text-gray-700 text-sm font-bold ">Create
+                Matter</span>
+        </div>
+        <form class="space-y-2 mt-14" action="#"  method="POST">
+            <label class="text-gray-700 text-sm font-bold mb-2">Matter Name</label>
+
+            <div class="">
+                <input type="text" id="matterNameid" placeholder="Enter name of the matter.."
+                    class="w-1/3	px-2 py-2 bg-white  text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none" />
+            </div>
+
+            <!-- component -->
+            <div class="relative">
+                <label class="text-gray-700 text-sm font-bold mb-2">Initial matter note</label>
+                <div class="relative">
+                    <i id="addIconEditdiv" onclick="showOptionsDropdown()" class="fa fa-plus relative"
+                        aria-hidden="true" style="display: inline;
+                    top: 56px;
+                    left: 31px;"></i>
+
+                   
+                    <div class="h-[7rem]  px-2 py-2 bg-white  text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none    mx-1 p-2 0 rounded--md focus:border-gray-400 overflow-hidden overflow-y-auto"
+                        contenteditable id='editor' onfocus="ShowaddIconEditdiv()" style="padding:40px;width: 87%;">
+                        <div>
+
+                        </div>
+                    
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+
+                <div class="p-2">
+                    <div>
+                        <label class="text-gray-700 text-sm font-bold mb-2">Matter owner (mandatory)</label>
+                        <br>
+                        <p class="text-sm text-gray-500 font-normal">
+                            This role is for the principal or partner level lawyer who owns <br>the matters and is
+                            ultimately
+                            responsible for
+                            them.
+                        </p>
+                        <div class="">
+
+                            <!-- <input
+                            
+                            class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none w-64"
+                            type="text"
+                           
+                          /> -->
+                            <input id="userInput" type="text" placeholder="Search for user" onfocus="filterOptions()"
+                                class="w-3/4 px-2 py-2 bg-white text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none relative" />
+                            <i class="fas fa-times relative right-7 cursor-pointer" onclick="clearSelection()"
+                                id="userclearicon"></i>
+
+                            <div id="usersdropdown" style="
+                            overflow: scroll;
+                            overflow-x: unset;
+                            height: 111px;"
+                                class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                                <!-- Dropdown content goes here -->
+                                <ul id="optionsList" class="py-1">
+                                    <!-- Options will be dynamically added here -->
+                                </ul>
+                            </div>
+
+                            <!-- Close icon in the input -->
+                            <!-- <div class="absolute right-4 top-2/4 transform -translate-y-1/2 cursor-pointer" onclick="clearSelection()">
+                         
+                         x
+                      </div> -->
+                        </div>
+
+                    </div>
+
+                    <!-- scond combo -->
+                    <div>
+                        <label class="text-gray-700 text-sm font-bold mb-2">Matter lead</label>
+                        <br>
+                        <p class="text-sm text-gray-500 font-normal">
+                            This role is for the more senior employed lawyer (typically they will <br>have a title like
+                            'senior associate') who is responsible for the day to <br>day management of the Matter
+                            Owner.
+                        </p>
+                        <div class="">
+
+
+                            <input id="matterLeadInput" type="text" placeholder="Search for users"
+                                onfocus="showMatterLeadusuers()"
+                                class="w-3/4 px-2 py-2 bg-white  text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none" />
+                            <i class="fas fa-times relative right-7 cursor-pointer" onclick="clearmatterleadSelection()"
+                                id="MatterleadUserclearicon"></i>
+
+                         
+
+                            <div id="matterleadDropdown" style="
+                            overflow: scroll;
+                            overflow-x: unset;
+                            height: 111px;"
+                                class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                                <!-- Dropdown content goes here -->
+                                <ul id="matterleadList" class="py-1">
+                                    <!-- Options will be dynamically added here -->
+                                </ul>
+                            </div>
+
+                            <div id="SelectedMatterLeaduser" class="mt-2">
+                                <!-- Selected items will be dynamically added here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class=" p-2">
+                    <div>
+                        <label class="text-gray-700 text-sm font-bold ">Practice Areas/Types</label>
+
+                        <div class="">
+
+                            <input id="matterType" type="text" placeholder="Start typing a matter type"
+                                onfocus="showMatterTypeDropdown()"
+                                class="w-3/4 px-2 py-2 bg-white text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none" />
+
+                            <div id="matterTypeDropdown" style="
+                                overflow: scroll;
+                                overflow-x: unset;
+                                height: 111px;"
+                                class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                                <!-- Dropdown content goes here -->
+                                <ul id="matterTypeOptionsList" class="py-1">
+                                    <!-- Options will be dynamically added here -->
+                                </ul>
+                            </div>
+
+                            <!-- Selected items container for matter types -->
+                            <div id="selectedMatterTypes" class="mt-2">
+                                <!-- Selected matter types will be dynamically added here -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- scond combo -->
+                    <div>
+                        <label class="text-gray-700 text-sm font-bold ">Jurisdiction
+                        </label>
+                        <br>
+
+                        <div class="">
+
+
+
+                            <input id="Jurisdiction" type="text" placeholder="Start typing Jurisdiction name"
+                                onfocus="showDropdown()" oninput="Jurisdiction()"
+                                class="w-3/4 px-2 py-2 bg-white text-sm border-2 border-gray-200 focus:border-blue-600 rounded outline-none" />
+
+                            <div id="Jurisdictiondropdown" style="    overflow: scroll;    overflow-x: unset;
+
+                            height: 111px;
+                        " class="absolute mt-2 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                                <!-- Dropdown content goes here -->
+                                <ul id="JurisdictionoptionsList" class="py-1">
+                                    <!-- Options will be dynamically added here -->
+                                </ul>
+                            </div>
+
+                            <div id="selectedItems" class="mt-2">
+                                <!-- Selected items will be dynamically added here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+
+        <div id="actionbtns" style="position: sticky;
+        width: 22%;
+        right: 0;
+        left: 78%;
+        top: 16px;
+        padding: 2px" class="fixed bg-white bottom-0 left-0 right-0 mb-4 flex justify-end">
+            <!-- Cancel Button -->
+            <button class="bg-white hover:bg-gray-100 border-2 text-black py-2 px-4 mr-5 rounded">Cancel</button>
+            <!-- Save Button (Primary) -->
+            <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 mr-2 rounded"
+                onclick="SaveNewMatter()">Save</button>
+        </div>
+
+    </div>
+
+
+
+
+    </div>
+</body>
+
+</html>
+<script>
+    // gloable array for data
+    var matterTypeArray = [];
+    var jurisdictionArray = [];
+    var owner = [];
+    var lead = [];
+
+
+    // get tokken form url 
+    const urlParams = new URLSearchParams(window.location.search);
+    var token = urlParams.get('token');
+
+
+    var addIconEditdiv = document.getElementById('addIconEditdiv');
+    addIconEditdiv.style.display = "none"
+
+    var MatterleadUserclearicon = document.getElementById('MatterleadUserclearicon');
+    MatterleadUserclearicon.style.display = "none"
+
+
+    function ShowaddIconEditdiv(filteredOptions) {
+        // addIconEditdiv.style.display = "inline"
+        var dropdown = document.getElementById("optionsDropdown");
+        dropdown.style.display = "none";
+
+    }
+
+    function showOptionsDropdown() {
+        var dropdown = document.getElementById("optionsDropdown");
+        dropdown.style.display = "block";
+    }
+
+
+
+    const UserArray = ['lisa', 'nick', 'dane'];
+
+    var userclearicon = document.getElementById('userclearicon');
+    userclearicon.style.display = "none"
+    function populateDropdown(filteredOptions) {
+        const optionsList = document.getElementById('optionsList');
+        optionsList.innerHTML = '';
+
+        filteredOptions.forEach(option => {
+            const li = document.createElement('li');
+            li.classList.add('text-gray-700', 'hover:bg-gray-100', 'px-4', 'py-2', 'cursor-pointer');
+            li.textContent = option;
+            li.onclick = () => selectOption(option);
+            optionsList.appendChild(li);
+        });
+    }
+    /// matter leade code
+    function populateDropdownmatterlead(filteredOptions) {
+        const optionsList = document.getElementById('matterleadList');
+        optionsList.innerHTML = '';
+
+        filteredOptions.forEach(option => {
+            const li = document.createElement('li');
+            li.classList.add('text-gray-700', 'hover:bg-gray-100', 'px-4', 'py-2', 'cursor-pointer');
+            li.textContent = option;
+            li.onclick = () => selectmatterLead(option);
+            optionsList.appendChild(li);
+        });
+    }
+    function showMatterLeadusuers() {
+        const searchInput = document.getElementById('matterLeadInput');
+        const usersdropdown = document.getElementById('matterleadDropdown');
+        const searchTerm = searchInput.value.toLowerCase();
+
+        const filteredUserArray = UserArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+        populateDropdownmatterlead(filteredUserArray);
+        usersdropdown.classList.toggle('hidden', filteredUserArray.length === 0);
+        usersdropdown.style.display = 'block';
+    }
+
+    function selectmatterLead(option) {
+        const searchInput = document.getElementById('matterLeadInput');
+        searchInput.value = option;
+        lead.push(option)
+        console.log(lead)
+        const usersdropdown = document.getElementById('matterleadDropdown');
+        usersdropdown.style.display = 'none';
+        MatterleadUserclearicon.style.display = "inline"
+        document.getElementById('matterleadDropdown').classList.add('hidden');
+    }
+    function clearmatterleadSelection() {
+        const searchInput = document.getElementById('matterLeadInput');
+        searchInput.value = '';
+        lead = [];
+        console.log(lead)
+
+        document.getElementById('matterleadDropdown').classList.add('hidden');
+        userclearicon.style.display = "none"
+
+    }
+
+
+    ///
+
+    function filterOptions() {
+        const searchInput = document.getElementById('userInput');
+        const usersdropdown = document.getElementById('usersdropdown');
+        const searchTerm = searchInput.value.toLowerCase();
+
+        const filteredUserArray = UserArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+        populateDropdown(filteredUserArray);
+        usersdropdown.classList.toggle('hidden', filteredUserArray.length === 0);
+        usersdropdown.style.display = 'block';
+    }
+
+    function selectOption(option) {
+        const searchInput = document.getElementById('userInput');
+        searchInput.value = option;
+        owner.push(option)
+        console.log(owner)
+        const usersdropdown = document.getElementById('usersdropdown');
+        usersdropdown.style.display = 'none';
+        userclearicon.style.display = "inline"
+        document.getElementById('usersdropdown').classList.add('hidden');
+    }
+
+    function showDropdown() {
+        const usersdropdown = document.getElementById('usersdropdown');
+        usersdropdown.style.display = 'block';
+    }
+
+    function clearSelection() {
+        const searchInput = document.getElementById('userInput');
+        searchInput.value = '';
+        owner = [];
+        console.log(owner)
+
+        document.getElementById('usersdropdown').classList.add('hidden');
+        userclearicon.style.display = "none"
+
+    }
+
+    document.addEventListener('click', function (event) {
+        const usersinput = document.getElementById('userInput');
+        const usersdropdown = document.getElementById('usersdropdown');
+
+        // Check if the click was outside the input and the dropdown
+        if (!usersinput.contains(event.target) && !usersdropdown.contains(event.target)) {
+            // Handle the event for clicking outside (e.g., hide the dropdown)
+            hideusersdropdown();
+        }
+    });
+    function hideusersdropdown() {
+        const dropdown = document.getElementById('usersdropdown');
+        dropdown.style.display = 'none';
+    }
+    // function populateDropdown(filteredOptions) {
+    //     const optionsList = document.getElementById('optionsList');
+    //     optionsList.innerHTML = '';
+
+    //     filteredOptions.forEach(option => {
+    //         const li = document.createElement('li');
+    //         li.classList.add('text-gray-700', 'hover:bg-gray-100', 'px-4', 'py-2', 'cursor-pointer');
+    //         li.textContent = option;
+    //         li.onclick = () => selectOption(option);
+    //         optionsList.appendChild(li);
+    //     });
+
+
+    // }
+
+    // function filterOptions() {
+    //     const searchInput = document.getElementById('searchInput');
+    //     const dropdown = document.getElementById('dropdown');
+    //     const searchTerm = searchInput.value.toLowerCase();
+
+    //     const filteredUserArray = UserArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+    //     populateDropdown(filteredUserArray);
+    //     dropdown.classList.toggle('hidden', filteredUserArray.length === 0);
+    //     dropdown.style.display = 'block';
+
+    // }
+
+    // function selectOption(option) {
+    //     const searchInput = document.getElementById('searchInput');
+    //     searchInput.value = option;
+    //     document.getElementById('dropdown').classList.add('hidden');
+    // }
+
+
+
+
+
+
+
+    // for matter type
+    const matterTypeOptionsArray = ['Legal', 'Financial', 'Contract', 'Intellectual Property', 'Other'];
+    document.addEventListener('click', function (event) {
+        const matterTypeInput = document.getElementById('matterType');
+        const matterTypeDropdown = document.getElementById('matterTypeDropdown');
+
+        // Check if the click was outside the input and the dropdown
+        if (!matterTypeInput.contains(event.target) && !matterTypeDropdown.contains(event.target)) {
+            // Handle the event for clicking outside (e.g., hide the dropdown)
+            hideMatterTypeDropdown();
+        }
+    });
+
+    function showMatterTypeDropdown() {
+        const searchTerm = document.getElementById('matterType').value.toLowerCase();
+        const filteredOptions = matterTypeOptionsArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+        const matterdropdown = document.getElementById('matterTypeDropdown');
+        const matterTypeOptionsList = document.getElementById('matterTypeOptionsList');
+
+        matterTypeOptionsList.innerHTML = '';
+
+        filteredOptions.forEach(option => {
+            const li = document.createElement('li');
+            li.style.cursor = 'pointer';
+            li.style.transition = 'background-color 0.3s';
+
+            // Add styles for regular state
+            li.style.padding = '8px';
+            li.style.borderBottom = '1px solid #ccc';
+
+            // Add styles for hover state
+            li.addEventListener('mouseenter', () => {
+                li.style.backgroundColor = '#6366f1'; // Change color on hover
+                li.style.color = 'white';
+            });
+
+            li.addEventListener('mouseleave', () => {
+                li.style.backgroundColor = 'transparent'; // Reset color on mouse leave
+                li.style.color = 'black';
+
+            });
+
+            li.addEventListener('click', () => selectMatterType(option));
+            matterTypeOptionsList.appendChild(li);
+            li.textContent = option;
+            li.addEventListener('click', () => selectMatterType(option));
+            matterTypeOptionsList.appendChild(li);
+        });
+
+        matterdropdown.style.display = 'block';
+    }
+
+
+    function selectMatterType(option) {
+        document.getElementById('matterType').value = '';
+        document.getElementById('matterTypeDropdown').style.display = 'none';
+
+        const selectedMatterTypesContainer = document.getElementById('selectedMatterTypes');
+        const existingMatterTypeItems = selectedMatterTypesContainer.querySelectorAll('.matter-type-toast-item');
+
+        for (const existingItem of existingMatterTypeItems) {
+            if (existingItem.dataset.option === option) {
+                // Item is already selected, do not add it again
+                return;
+            }
+        }
+        matterTypeArray.push(option)
+        console.log(matterTypeArray)
+        const toastContainer = document.getElementById('selectedMatterTypes');
+        const toast = document.createElement('div');
+        toast.className = 'flex justify-between items-center w-3/4 max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 mb-2 matter-type-toast-item';
+        toast.dataset.option = option;
+        toast.innerHTML = `
+        <div class="flex items-center">
+            <div class="ms-3 text-sm font-normal">${option}</div>
+        </div>
+        <button type="button" class="-mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" onclick="removeMatterTypeToast(this)" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    `;
+
+        toastContainer.appendChild(toast);
+    }
+
+    function removeMatterTypeToast(button) {
+        const toast = button.parentElement;
+        const toastContainer = toast.parentElement;
+        // Remove the option from the mattertype array
+        const optionToRemove = toast.dataset.option;
+        matterTypeArray = matterTypeArray.filter(option => option !== optionToRemove);
+        console.log(matterTypeArray)
+        toastContainer.removeChild(toast);
+    }
+    function hideMatterTypeDropdown() {
+        const dropdown = document.getElementById('matterTypeDropdown');
+        dropdown.style.display = 'none';
+    }
+
+    /// for jurisdiction
+    const optionsArray = ['USA', 'USA', 'District of Columbia'];
+    document.addEventListener('click', function (event) {
+        const JurisdictionInput = document.getElementById('Jurisdiction');
+        const JurisdictionDropdown = document.getElementById('Jurisdictiondropdown');
+
+        // Check if the click was outside the input and the dropdown
+        if (!JurisdictionInput.contains(event.target) && !JurisdictionDropdown.contains(event.target)) {
+            // Handle the event for clicking outside (e.g., hide the dropdown)
+            hideJurisdictionDropdown();
+        }
+    });
+    function showDropdown() {
+        const searchTerm = document.getElementById('Jurisdiction').value.toLowerCase();
+        const filteredOptions = optionsArray.filter(option => option.toLowerCase().includes(searchTerm));
+
+        const dropdown = document.getElementById('Jurisdictiondropdown');
+        const JurisdictionoptionsList = document.getElementById('JurisdictionoptionsList');
+
+        JurisdictionoptionsList.innerHTML = '';
+
+        filteredOptions.forEach(option => {
+            const li = document.createElement('li');
+            li.style.cursor = 'pointer';
+            li.style.transition = 'background-color 0.3s';
+
+            // Add styles for regular state
+            li.style.padding = '8px';
+            li.style.borderBottom = '1px solid #ccc';
+
+            // Add styles for hover state
+            li.addEventListener('mouseenter', () => {
+                li.style.backgroundColor = '#6366f1'; // Change color on hover
+                li.style.color = 'white';
+            });
+
+            li.addEventListener('mouseleave', () => {
+                li.style.backgroundColor = 'transparent'; // Reset color on mouse leave
+                li.style.color = 'black';
+
+            });
+
+            li.textContent = option;
+            li.addEventListener('click', () => selectJurisdiction(option));
+            JurisdictionoptionsList.appendChild(li);
+        });
+
+        dropdown.style.display = 'block';
+    }
+
+    function selectJurisdiction(option) {
+        // Clear the input and hide the dropdown
+        document.getElementById('Jurisdiction').value = '';
+        document.getElementById('Jurisdictiondropdown').style.display = 'none';
+
+        // Check if the item is already selected
+        const selectedItemsContainer = document.getElementById('selectedItems');
+        const existingItems = selectedItemsContainer.querySelectorAll('.toast-item');
+        console.log(existingItems)
+        for (const existingItem of existingItems) {
+            if (existingItem.dataset.option === option) {
+                // Item is already selected, do not add it again
+                return;
+            }
+        }
+        jurisdictionArray.push(option)
+        console.log(jurisdictionArray)
+        // Create a new toast message
+        const toastContainer = document.getElementById('selectedItems');
+        const toast = document.createElement('div');
+        toast.className = 'flex justify-between items-center w-3/4 max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 mb-2 toast-item';
+        toast.dataset.option = option; // Set a unique identifier
+        toast.innerHTML = `
+      <div class="flex items-center">
+        <div class="ms-3 text-sm font-normal">${option}</div>
+      </div>
+      <button type="button" class="-mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" onclick="removeToast(this)" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+        </svg>
+      </button>
+    `;
+
+        // Append the toast message to the container
+        toastContainer.appendChild(toast);
+    }
+
+    function removeToast(button) {
+        const toast = button.parentElement;
+        const toastContainer = toast.parentElement;
+
+        // Remove the option from the jurisdictionArray
+        const optionToRemove = toast.dataset.option;
+        jurisdictionArray = jurisdictionArray.filter(option => option !== optionToRemove);
+        console.log(jurisdictionArray)
+        // Remove the toast from the DOM
+        toastContainer.removeChild(toast);
+    }
+    function hideJurisdictionDropdown() {
+        const dropdown = document.getElementById('Jurisdictiondropdown');
+        dropdown.style.display = 'none';
+    }
+
+    function SaveNewMatter() {
+
+        let matterName = document.getElementById("matterNameid").value;
+
+        let discription = document.getElementById("editor").innerText;
+        let requestData = {
+            jsonapi: {
+                version: "1.0"
+            },
+            data: {
+                type: "matter",
+                attributes: {
+                    name: matterName, // required
+                    jurisdictions: jurisdictionArray, // optionsal
+                    types: matterTypeArray, // optionsal
+                    description: discription, // optionsal
+                    roles: { // required
+                        OWNER: ["ZtvLdnzV8xAzUi5_aQI67"], // required
+                        LEAD: ["ZtvLdnzV8xAzUi5_aQI67"] // optional
+                    }
+                }
+            }
+        }
+
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token)
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(requestData),
+            redirect: 'follow'
+        };
+
+        fetch("https://app-staging.hivelight.com/v1/matters", requestOptions)
+            .then(response => response.json())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+
+
+        console.log(requestData)
+    }
+
+</script>
